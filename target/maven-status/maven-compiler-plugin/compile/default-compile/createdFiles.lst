@@ -1,0 +1,7 @@
+edu/pzks/security25/repository/CarRepository.class
+edu/pzks/security25/controller/CarController.class
+edu/pzks/security25/controller/CsrfController.class
+edu/pzks/security25/service/CarService.class
+edu/pzks/security25/model/Car.class
+edu/pzks/security25/Security25Application.class
+edu/pzks/security25/config/SecurityConfig.class

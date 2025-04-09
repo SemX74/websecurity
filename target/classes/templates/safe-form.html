@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Safe Form - CSRF Protected</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .container {
+        border: 1px solid #ddd;
+        padding: 20px;
+        border-radius: 5px;
+      }
+      .success {
+        color: green;
+      }
+      .danger {
+        color: red;
+      }
+      .info {
+        color: blue;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Safe Form - CSRF Protected</h1>
+    <div class="container">
+      <p class="info">
+        This form is protected against CSRF attacks because it includes the CSRF
+        token.
+      </p>
+
+      <form th:action="@{/csrf-demo/submit}" method="post">
+        <!-- CSRF Token included by Thymeleaf automatically -->
+        <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+
+        <div>
+          <label for="message">Message:</label>
+          <input type="text" id="message" name="message" required />
+        </div>
+        <div style="margin-top: 10px">
+          <button type="submit">Submit</button>
+        </div>
+      </form>
+    </div>
+
+    <div style="margin-top: 20px">
+      <p>CSRF Token Details:</p>
+      <ul>
+        <li>Token: <span th:text="${_csrf.token}"></span></li>
+        <li>Header Name: <span th:text="${_csrf.headerName}"></span></li>
+        <li>Parameter Name: <span th:text="${_csrf.parameterName}"></span></li>
+      </ul>
+    </div>
+
+    <div style="margin-top: 20px">
+      <a th:href="@{/csrf-demo/vulnerable-form}">Go to vulnerable form</a> |
+      <a th:href="@{/csrf-demo/attacker}">Go to attacker page</a>
+    </div>
+  </body>
+</html>
