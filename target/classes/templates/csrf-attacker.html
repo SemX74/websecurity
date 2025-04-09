@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>CSRF Attack Simulator</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .container {
+        border: 1px solid #ddd;
+        padding: 20px;
+        border-radius: 5px;
+      }
+      .malicious {
+        background-color: #ffdddd;
+      }
+      .success {
+        color: green;
+      }
+      .danger {
+        color: red;
+      }
+      .info {
+        color: blue;
+      }
+      pre {
+        background-color: #eee;
+        padding: 10px;
+        border-radius: 5px;
+        overflow-x: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>CSRF Attack Simulator</h1>
+    <div class="container">
+      <p>
+        This page simulates a malicious website that attempts to perform a CSRF
+        attack against your application.
+      </p>
+
+      <h2>How CSRF Attacks Work</h2>
+      <ol>
+        <li>The victim is authenticated to the target website</li>
+        <li>The victim visits a malicious website</li>
+        <li>
+          The malicious website contains code that sends a request to the target
+          website
+        </li>
+        <li>
+          The browser includes the victim's authentication cookies with the
+          request
+        </li>
+        <li>
+          If there's no CSRF protection, the target website processes the
+          request as legitimate
+        </li>
+      </ol>
+
+      <h2>Simulated Attack</h2>
+      <div class="container malicious">
+        <h3>Malicious Form (Auto-Submit)</h3>
+        <p class="danger">
+          This form automatically submits when the page loads. In a real-world
+          scenario, this could be hidden from the user or disguised as something
+          else.
+        </p>
+
+        <form
+          id="csrf-form"
+          action="http://localhost:8080/csrf-demo/submit"
+          method="post"
+        >
+          <input type="hidden" name="message" value="HACKED BY CSRF ATTACK!" />
+          <button type="submit">Submit Manually</button>
+        </form>
+
+        <script>
+          // This would automatically submit in a real attack
+          // document.getElementById('csrf-form').submit();
+        </script>
+      </div>
+    </div>
+
+    <div class="container" style="margin-top: 20px">
+      <h2>Why This Attack Fails</h2>
+      <p>
+        With CSRF protection enabled in Spring Security, this attack will fail
+        because:
+      </p>
+      <ol>
+        <li>The server expects a valid CSRF token in the request</li>
+        <li>The attacker doesn't have access to the victim's CSRF token</li>
+        <li>Without a valid token, the server rejects the request</li>
+      </ol>
+    </div>
+
+    <div style="margin-top: 20px">
+      <a th:href="@{/csrf-demo/safe-form}">Go to safe form</a> |
+      <a th:href="@{/csrf-demo/vulnerable-form}">Go to vulnerable form</a>
+    </div>
+  </body>
+</html>

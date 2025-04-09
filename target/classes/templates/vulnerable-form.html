@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Vulnerable Form - No CSRF Protection</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .container {
+        border: 1px solid #ddd;
+        padding: 20px;
+        border-radius: 5px;
+      }
+      .success {
+        color: green;
+      }
+      .danger {
+        color: red;
+      }
+      .info {
+        color: blue;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Vulnerable Form - No CSRF Protection</h1>
+    <div class="container">
+      <p class="danger">
+        This form is vulnerable to CSRF attacks because it manually omits the
+        CSRF token.
+        <br />
+        <strong>Note:</strong> With CSRF protection enabled in Spring Security,
+        this form will be rejected by the server when submitted.
+      </p>
+
+      <form action="/csrf-demo/submit" method="post">
+        <!-- No CSRF Token included -->
+        <div>
+          <label for="message">Message:</label>
+          <input type="text" id="message" name="message" required />
+        </div>
+        <div style="margin-top: 10px">
+          <button type="submit">Submit (Will Fail)</button>
+        </div>
+      </form>
+    </div>
+
+    <div style="margin-top: 20px">
+      <a th:href="@{/csrf-demo/safe-form}">Go to safe form</a> |
+      <a th:href="@{/csrf-demo/attacker}">Go to attacker page</a>
+    </div>
+  </body>
+</html>
