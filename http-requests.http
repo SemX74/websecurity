@@ -1,0 +1,76 @@
+# Car API HTTP Requests with Role-Based Access Control
+# This file contains requests that demonstrate role-based access to the API
+# Use these with Postman or other HTTP client tools
+
+# IMPORTANT CSRF TOKEN HANDLING:
+# The application uses CSRF protection with cookie-based tokens
+# For any non-GET requests (POST, PUT, DELETE, PATCH), you need to:
+# 1. First make a GET request to fetch the CSRF token (it will be in the response cookies as 'XSRF-TOKEN')
+# 2. Include the token in the header of subsequent requests as 'X-XSRF-TOKEN'
+# In Postman, you can use the Collection settings to automatically extract and use the token
+
+### 1. Get All Cars (READ)
+GET http://localhost:8080/api/cars
+Authorization: Basic user user
+
+### 2. Get Car by ID (READ)
+GET http://localhost:8080/api/cars/1
+Authorization: Basic user user
+
+### 3. Create New Car (CREATE) - Admin/Superadmin only
+POST http://localhost:8080/api/cars
+Authorization: Basic admin admin
+Content-Type: application/json
+X-XSRF-TOKEN: {{xsrf_token}}
+
+{
+  "make": "Honda",
+  "model": "Civic",
+  "year": 2022,
+  "color": "Silver",
+  "price": 23000.00
+}
+
+### 4. Update Car (UPDATE) - Admin/Superadmin only
+PUT http://localhost:8080/api/cars/1
+Authorization: Basic admin admin
+Content-Type: application/json
+X-XSRF-TOKEN: {{xsrf_token}}
+
+{
+  "make": "Honda",
+  "model": "Civic",
+  "year": 2023,
+  "color": "Black",
+  "price": 24000.00
+}
+
+### 5. Delete Car (DELETE) - Admin/Superadmin only
+DELETE http://localhost:8080/api/cars/2
+Authorization: Basic admin admin
+X-XSRF-TOKEN: {{xsrf_token}}
+
+### 6. Get System Stats - Superadmin only
+GET http://localhost:8080/api/cars/admin/stats
+Authorization: Basic superadmin superadmin
+
+### 7. Search Cars by Make (READ)
+GET http://localhost:8080/api/cars/search/make/Toyota
+Authorization: Basic user user
+
+### 8. Get Cars by Price Range (READ)
+GET http://localhost:8080/api/cars/search/price?min=20000&max=30000
+Authorization: Basic user user
+
+### 9. Bulk Delete Cars (DELETE) - Admin/Superadmin only
+DELETE http://localhost:8080/api/cars/bulk
+Authorization: Basic admin admin
+Content-Type: application/json
+X-XSRF-TOKEN: {{xsrf_token}}
+
+[1, 3, 5]
+
+### 10. Reset Car Price (PATCH) - Admin/Superadmin only
+PATCH http://localhost:8080/api/cars/1/reset-price?newPrice=22000
+Authorization: Basic admin admin
+X-XSRF-TOKEN: {{xsrf_token}} 
